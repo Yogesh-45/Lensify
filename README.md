@@ -23,7 +23,8 @@ Leveraging the attention mechanism in Transformers to capture global context and
 ### Autoencoder-Based Feature Extractor
 
 A self-supervised learning approach that reconstructs input images to learn latent representations.
-Segmentation Mask + CNN-Based Feature Extractor
+
+### Segmentation Mask + CNN-Based Feature Extractor
 
 Combines segmentation masks with CNNs to focus feature extraction on specific regions of interest in an image.
 
