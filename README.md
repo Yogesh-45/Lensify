@@ -56,7 +56,10 @@ The core functionality of Lensify depends on the quality of the feature extracto
 The approaches which gave me promising results are Transformer based and CNN based.
 
 ### Transformer:
-Average Precision- 1   |   Average Recall- 0.365
+Average Precision @ k=10- 1     |   Average Recall @ k=50- 0.365
 
 ### CNN Based:
-Average Precision- 0.99 | Average Recall- 0.365
+Average Precision @ k=10- 0.99  |   Average Recall @ k=50- 0.365
+
+### YOLO Based:
+Average Precision @ k=10- 0.869 |   Average Recall @ k=50- 0.277
