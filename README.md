@@ -63,3 +63,6 @@ Average Precision @ k=10- 0.99  |   Average Recall @ k=50- 0.365
 
 ### YOLO Based:
 Average Precision @ k=10- 0.869 |   Average Recall @ k=50- 0.277
+
+### Autoencoder Based:
+Average Precision @ k=10- 0.6 |   Average Recall @ k=50- 0.113
