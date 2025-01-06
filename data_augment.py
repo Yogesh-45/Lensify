@@ -1,17 +1,16 @@
 import os
 from PIL import Image
 from torchvision import transforms
+import kagglehub
 
-# # Define augmentation transformations
-# augmentation_transforms = transforms.Compose([
-#     transforms.RandomHorizontalFlip(p=0.5),
-#     transforms.RandomVerticalFlip(p=0.2),
-#     transforms.RandomRotation(degrees=15),
-#     transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
-#     transforms.RandomResizedCrop(size=(224, 224), scale=(0.8, 1.0)),
-#     transforms.ToTensor()
-# ])
 
+# Download dataset from kaggle
+path = kagglehub.dataset_download("deeptrial/miniimagenet")
+
+print("Path to dataset files:", path)
+
+
+#Transformation to generate more data
 
 augmentation_transforms = transforms.Compose([
     transforms.RandomApply([
@@ -53,70 +52,43 @@ augmentation_transforms = transforms.Compose([
 ])
 
 
-# Directory paths
-input_dir = "D:/yogi/shoppin/ImageNet-Mini/images"  # Replace with the path to your original images
-output_dir = "D:/yogi/shoppin/ImageNet-Mini/augmented_images"  # Replace with the desired output directory
-os.makedirs(output_dir, exist_ok=True)
+def generate_augmented_data(input_directory= "D:/yogi/shoppin/ImageNet-Mini/images",
+                            output_directory= "D:/yogi/shoppin/ImageNet-Mini/augmented_images",
+                            transform= augmentation_transforms,
+                            num_augmentations= 50):
+    
+    '''
+    Applies transform to generate augmented data for the images in the input_directory 
+    and saves them to output_directory.
+    num_augmentations is the number of augmentations generated per image
+    '''
 
-# # Number of augmentations per image
-num_augmentations = 50
+    os.makedirs(output_directory, exist_ok=True)
 
-for dir, folder, files in os.walk(input_dir):
+    for dir, folder, files in os.walk(input_directory):
 
-    for filename in files:
+        for filename in files:
 
-        file_path = os.path.join(dir, filename)
-        image = Image.open(file_path)
-        # print(output_dir)
-        # print(dir)
-        # print(os.path.basename(dir))
-        # break
-        
-        for i in range(num_augmentations):
-            augmented_image = augmentation_transforms(image)
-            augmented_image = transforms.ToPILImage()(augmented_image)  # Convert back to PIL for saving
+            file_path = os.path.join(dir, filename)
+            image = Image.open(file_path)
 
-            # Convert to RGB if the image is in RGBA mode
-            if augmented_image.mode == 'RGBA':
-                augmented_image = augmented_image.convert('RGB')
             
-            # Save augmented image
-            base_name, ext = os.path.splitext(filename)
-            augmented_filename = f"{base_name}_aug_{i}{ext}"
-            output_folder= os.path.join(output_dir, os.path.basename(dir))
-            print(output_folder)
+            for i in range(num_augmentations):
+                augmented_image = transform(image)
+                augmented_image = transforms.ToPILImage()(augmented_image)  # Convert back to PIL for saving
 
-            os.makedirs(output_folder, exist_ok=True)
-            augmented_image.save(os.path.join(output_folder, augmented_filename))
+                # Convert to RGB if the image is in RGBA mode
+                if augmented_image.mode == 'RGBA':
+                    augmented_image = augmented_image.convert('RGB')
+                
+                # Save augmented image
+                base_name, ext = os.path.splitext(filename)
+                augmented_filename = f"{base_name}_aug_{i}{ext}"
+                output_folder= os.path.join(output_directory, os.path.basename(dir))
+                print(output_folder)
+
+                os.makedirs(output_folder, exist_ok=True)
+                augmented_image.save(os.path.join(output_folder, augmented_filename))
 
 
-print(f"Augmented images saved to {output_dir}")
-
-
-# # Directory paths
-# input_dir = "D:/yogi/shoppin/ImageNet-Mini/images/n15075141"  # Replace with the path to your original images
-# output_dir = "D:/yogi/shoppin/ImageNet-Mini/augmented_images/n15075141"  # Replace with the desired output directory
-
-# # Augment and save images
-# for filename in os.listdir(input_dir):
-#     print(filename)
-#     if filename.endswith(('.jpg', '.png', '.JPEG')):  # Check for image files
-#         file_path = os.path.join(input_dir, filename)
-#         image = Image.open(file_path)
-        
-#         for i in range(num_augmentations):
-#             augmented_image = augmentation_transforms(image)
-#             augmented_image = transforms.ToPILImage()(augmented_image)  # Convert back to PIL for saving
-
-#             # Convert to RGB if the image is in RGBA mode
-#             if augmented_image.mode == 'RGBA':
-#                 augmented_image = augmented_image.convert('RGB')
-
-#             # Save augmented image
-#             base_name, ext = os.path.splitext(filename)
-#             augmented_filename = f"{base_name}_aug_{i}.jpg"  # Save as JPEG
-#             print(output_dir)
-#             os.makedirs(output_dir, exist_ok=True)
-#             augmented_image.save(os.path.join(output_dir, augmented_filename))
-
-# print(f"Augmented images saved to {output_dir}")
+    print(f"Augmented images saved to {output_directory}")
