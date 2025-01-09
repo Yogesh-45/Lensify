@@ -66,3 +66,6 @@ Average Precision @ k=10- 0.869 |   Average Recall @ k=50- 0.277
 
 ### Autoencoder Based:
 Average Precision @ k=10- 0.6 |   Average Recall @ k=50- 0.113
+
+# Checkpoints:
+Checkpoints can be downloaded from the following link: https://drive.google.com/drive/folders/134FOh28aqSnUlUdXsGOoIBBn9taLvg1l?usp=drive_link
